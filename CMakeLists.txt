@@ -31,8 +31,15 @@ set(GLFW_INSTALL
 FetchContent_Declare(
   glfw
   GIT_REPOSITORY https://github.com/glfw/glfw.git
-  GIT_TAG 3.3.2)
+  GIT_TAG 3.3.9)
 FetchContent_MakeAvailable(glfw)
+
+FetchContent_Declare(
+  glm
+  GIT_REPOSITORY https://github.com/g-truc/glm.git
+  GIT_TAG 1.0.0)
+
+FetchContent_MakeAvailable(glm)
 
 if(NOT imgui_POPULATED)
   FetchContent_Populate(imgui)
@@ -74,4 +81,4 @@ add_executable(nigl src/main.cpp)
 
 set_target_properties(nigl PROPERTIES CXX_STANDARD 20 CXX_EXTENSIONS OFF)
 
-target_link_libraries(nigl PRIVATE compile_options imgui glfw GLEW)
+target_link_libraries(nigl PRIVATE compile_options imgui glfw GLEW glm::glm)
