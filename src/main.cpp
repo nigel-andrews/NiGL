@@ -1,11 +1,16 @@
-#include <GL/glew.h>
+// clang-format off
+#include <glad/glad.h>
 #include <GLFW/glfw3.h>
+// clang-format on
 #include <iostream>
 
 #include "utils/wrappers.h"
 
 namespace
 {
+    int width = 800;
+    int height = 600;
+
     void init_glfw()
     {
         glfwSetErrorCallback([](int code, const char* msg) {
@@ -13,33 +18,38 @@ namespace
         });
 
         if (auto err = (glfwInit()); err != GLFW_TRUE)
-        {
             GLFW_ERR(glfwInit);
-        }
 
         std::cout << "Initialized GLFW...\n";
     }
 
-    void init_glew()
+    void init_glad()
     {
-        if (auto err = (glewInit()); err != GLEW_OK)
-        {
-            std::cerr << "Failed calling glewInit()\n";
-            std::cerr << "\tReason: " << glewGetErrorString(err) << "\n";
-            std::exit(1);
-        }
+        if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+            throw std::runtime_error("Failed to initialize GLAD");
 
-        std::cout << "Initialized GLEW...\n";
+        GL(glViewport(0, 0, width, height));
+
+        std::cout << "Initialized GLAD...\n";
     }
 } // namespace
 
 int main(int, char**)
 {
     init_glfw();
-    GLFWwindow* window = glfwCreateWindow(640, 480, "My Title", NULL, NULL);
+
+    GLFWwindow* window = glfwCreateWindow(width, height, "NiGL", NULL, NULL);
+    glfwSetFramebufferSizeCallback(window,
+                                   [](GLFWwindow*, int width, int height) {
+                                       glViewport(0, 0, width, height);
+                                   });
+
+    if (!window)
+        GLFW_ERR(glfwCreateWindow);
+
     glfwMakeContextCurrent(window);
 
-    init_glew();
+    init_glad();
 
     while (!glfwWindowShouldClose(window))
     {
@@ -47,7 +57,6 @@ int main(int, char**)
         glfwPollEvents();
     }
 
-    glfwDestroyWindow(window);
-
+    glfwTerminate();
     return 0;
 }
