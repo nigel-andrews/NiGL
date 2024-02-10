@@ -33,4 +33,8 @@
 
 # Build folder
 build
+
+# Misc
 .cache
+compile_commands.json
+shaders

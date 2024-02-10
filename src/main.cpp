@@ -4,6 +4,7 @@
 // clang-format on
 #include <iostream>
 
+#include "shader/shader_utils.h"
 #include "utils/wrappers.h"
 
 namespace
@@ -36,27 +37,30 @@ namespace
 
 int main(int, char**)
 {
-    init_glfw();
+    std::cout << shader::get_shader_source("shaders/vertex.glsl");
 
-    GLFWwindow* window = glfwCreateWindow(width, height, "NiGL", NULL, NULL);
-    glfwSetFramebufferSizeCallback(window,
-                                   [](GLFWwindow*, int width, int height) {
-                                       glViewport(0, 0, width, height);
-                                   });
-
-    if (!window)
-        GLFW_ERR(glfwCreateWindow);
-
-    glfwMakeContextCurrent(window);
-
-    init_glad();
-
-    while (!glfwWindowShouldClose(window))
-    {
-        glfwSwapBuffers(window);
-        glfwPollEvents();
-    }
-
-    glfwTerminate();
+    // init_glfw();
+    //
+    // // Window init
+    // GLFWwindow* window = glfwCreateWindow(width, height, "NiGL", NULL, NULL);
+    // glfwSetFramebufferSizeCallback(window,
+    //                                [](GLFWwindow*, int width, int height) {
+    //                                    GL(glViewport(0, 0, width, height));
+    //                                });
+    //
+    // if (!window)
+    //     GLFW_ERR(glfwCreateWindow);
+    //
+    // glfwMakeContextCurrent(window);
+    //
+    // init_glad();
+    //
+    // while (!glfwWindowShouldClose(window))
+    // {
+    //     glfwSwapBuffers(window);
+    //     glfwPollEvents();
+    // }
+    //
+    // glfwTerminate();
     return 0;
 }
