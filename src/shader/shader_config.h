@@ -7,7 +7,7 @@ namespace fs = std::filesystem;
 
 namespace shader
 {
-    struct shader_config
+    struct ShaderConfig
     {
         fs::path vertex_shader;
         std::optional<fs::path> tess_control_shader;
@@ -16,7 +16,7 @@ namespace shader
         fs::path fragment_shader;
     };
 
-    struct compute_shader_config
+    struct ComputeShaderConfig
     {
         fs::path compute_shader;
     };
