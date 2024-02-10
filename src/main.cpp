@@ -4,6 +4,7 @@
 // clang-format on
 #include <iostream>
 
+#include "program.h"
 #include "shader/shader_utils.h"
 #include "utils/wrappers.h"
 
@@ -19,7 +20,7 @@ namespace
         });
 
         if (auto err = (glfwInit()); err != GLFW_TRUE)
-            GLFW_ERR(glfwInit);
+            GLFW_ERR();
 
         std::cout << "Initialized GLFW...\n";
     }
@@ -37,30 +38,28 @@ namespace
 
 int main(int, char**)
 {
-    std::cout << shader::get_shader_source("shaders/vertex.glsl");
+    init_glfw();
 
-    // init_glfw();
-    //
-    // // Window init
-    // GLFWwindow* window = glfwCreateWindow(width, height, "NiGL", NULL, NULL);
-    // glfwSetFramebufferSizeCallback(window,
-    //                                [](GLFWwindow*, int width, int height) {
-    //                                    GL(glViewport(0, 0, width, height));
-    //                                });
-    //
-    // if (!window)
-    //     GLFW_ERR(glfwCreateWindow);
-    //
-    // glfwMakeContextCurrent(window);
-    //
-    // init_glad();
-    //
-    // while (!glfwWindowShouldClose(window))
-    // {
-    //     glfwSwapBuffers(window);
-    //     glfwPollEvents();
-    // }
-    //
-    // glfwTerminate();
+    // Window init
+    GLFWwindow* window = glfwCreateWindow(width, height, "NiGL", NULL, NULL);
+    glfwSetFramebufferSizeCallback(window,
+                                   [](GLFWwindow*, int width, int height) {
+                                       GL(glViewport(0, 0, width, height));
+                                   });
+
+    if (!window)
+        GLFW_ERR();
+
+    glfwMakeContextCurrent(window);
+
+    init_glad();
+
+    while (!glfwWindowShouldClose(window))
+    {
+        glfwSwapBuffers(window);
+        glfwPollEvents();
+    }
+
+    glfwTerminate();
     return 0;
 }
