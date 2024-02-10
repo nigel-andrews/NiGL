@@ -12,6 +12,7 @@ namespace shader
         fs::path vertex_shader;
         std::optional<fs::path> tess_control_shader;
         std::optional<fs::path> tess_eval_shader;
+        std::optional<fs::path> geometry_shader;
         fs::path fragment_shader;
     };
 
