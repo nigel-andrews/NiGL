@@ -4,25 +4,50 @@
 // clang-format on
 #include <iostream>
 
-#include "program.h"
-#include "shader/shader_utils.h"
 #include "utils/wrappers.h"
 
 namespace
 {
-    int width = 800;
-    int height = 600;
+    int window_width = 800;
+    int window_height = 600;
 
-    void init_glfw()
+    GLFWwindow* init_glfw()
     {
         glfwSetErrorCallback([](int code, const char* msg) {
             std::cerr << "Error " << code << "\n\tReason: " << msg << "\n";
         });
 
         if (auto err = (glfwInit()); err != GLFW_TRUE)
-            GLFW_ERR();
+            GLFW_ERR(glfwTerminate();
+                     throw std::runtime_error("Failed to initialize GLFW"));
 
         std::cout << "Initialized GLFW...\n";
+        GLFWwindow* window =
+            glfwCreateWindow(window_width, window_height, "NiGL", NULL, NULL);
+
+        if (!window)
+            GLFW_ERR(glfwTerminate();
+                     throw std::runtime_error("Failed to create window"));
+
+        glfwMakeContextCurrent(window);
+
+        glfwSetFramebufferSizeCallback(window,
+                                       [](GLFWwindow*, int width, int height) {
+                                           GL(glViewport(0, 0, width, height));
+                                           window_width = width;
+                                           window_height = height;
+                                       });
+
+        glfwSetKeyCallback(window,
+                           [](GLFWwindow* window, int key, int /* scancode */,
+                              int /* action */, int /* mods */) {
+                               if (key == GLFW_KEY_ESCAPE)
+                                   glfwSetWindowShouldClose(window, true);
+                           });
+
+        glfwSwapInterval(1);
+
+        return window;
     }
 
     void init_glad()
@@ -30,7 +55,10 @@ namespace
         if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
             throw std::runtime_error("Failed to initialize GLAD");
 
-        GL(glViewport(0, 0, width, height));
+        std::cout << "Renderer: " << glGetString(GL_RENDERER)
+                  << "\nOpenGL version: " << glGetString(GL_VERSION) << "\n";
+
+        GL(glViewport(0, 0, window_width, window_height));
 
         std::cout << "Initialized GLAD...\n";
     }
@@ -38,24 +66,13 @@ namespace
 
 int main(int, char**)
 {
-    init_glfw();
-
-    // Window init
-    GLFWwindow* window = glfwCreateWindow(width, height, "NiGL", NULL, NULL);
-    glfwSetFramebufferSizeCallback(window,
-                                   [](GLFWwindow*, int width, int height) {
-                                       GL(glViewport(0, 0, width, height));
-                                   });
-
-    if (!window)
-        GLFW_ERR();
-
-    glfwMakeContextCurrent(window);
+    auto window = init_glfw();
 
     init_glad();
 
     while (!glfwWindowShouldClose(window))
     {
+        GL(glClear(GL_COLOR_BUFFER_BIT));
         glfwSwapBuffers(window);
         glfwPollEvents();
     }

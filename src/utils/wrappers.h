@@ -2,11 +2,12 @@
 
 // Required for the macro when in debug mode
 
-#define GLFW_ERR()                                                             \
+#define GLFW_ERR(...)                                                          \
     do                                                                         \
     {                                                                          \
         const char* msg = nullptr;                                             \
         glfwGetError(&msg);                                                    \
+        __VA_ARGS__;                                                           \
     } while (false)
 
 #define GL(Expr, ...)                                                          \
