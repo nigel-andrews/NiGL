@@ -17,6 +17,10 @@ namespace
             std::cerr << "Error " << code << "\n\tReason: " << msg << "\n";
         });
 
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
+        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
         if (auto err = (glfwInit()); err != GLFW_TRUE)
             GLFW_ERR(glfwTerminate();
                      throw std::runtime_error("Failed to initialize GLFW"));
