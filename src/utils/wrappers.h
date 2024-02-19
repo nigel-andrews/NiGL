@@ -1,6 +1,6 @@
 #pragma once
 
-// Required for the macro when in debug mode
+#include <iostream>
 
 #define GLFW_ERR(...)                                                          \
     do                                                                         \
@@ -18,6 +18,6 @@
         {                                                                      \
             std::cerr << "Failed calling " << #Expr << " line: " << __LINE__   \
                       << " in file: " << __FILE__ << "\n";                     \
+            __VA_ARGS__;                                                       \
         }                                                                      \
-        __VA_ARGS__;                                                           \
     } while (false)
