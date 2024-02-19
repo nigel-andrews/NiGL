@@ -80,7 +80,7 @@ add_subdirectory(src)
 
 add_executable(nigl src/main.cpp)
 
-set_target_properties(nigl PROPERTIES CXX_STANDARD 20 CXX_EXTENSIONS OFF)
+set_target_properties(nigl PROPERTIES CXX_STANDARD 23 CXX_EXTENSIONS OFF)
 
 target_link_libraries(nigl PRIVATE compile_options imgui glfw glad glm::glm
                                    shader)
