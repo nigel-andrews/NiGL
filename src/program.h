@@ -1,20 +1,12 @@
 #pragma once
 
-#include <variant>
+#include <glad/glad.h>
 
 #include "shader/shader_config.h"
 
-class Program
+namespace Program
 {
-public:
-    explicit Program(shader::ShaderConfig&& config)
-        : config_(config)
-    {}
+    GLint create_program(const shader::Configurable auto& config);
+}; // namespace Program
 
-    explicit Program(shader::ComputeShaderConfig&& config)
-        : config_(config)
-    {}
-
-private:
-    std::variant<shader::ShaderConfig, shader::ComputeShaderConfig> config_;
-};
+#include "program.hxx"
