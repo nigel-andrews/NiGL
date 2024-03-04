@@ -78,9 +78,13 @@ add_subdirectory(external)
 
 add_subdirectory(src)
 
-add_executable(nigl src/main.cpp)
+add_library(nigl STATIC src/nigl.cpp)
 
 set_target_properties(nigl PROPERTIES CXX_STANDARD 23 CXX_EXTENSIONS OFF)
 
+target_include_directories(nigl PUBLIC external)
+
 target_link_libraries(nigl PRIVATE compile_options imgui glfw glad glm::glm
                                    shader)
+
+add_subdirectory(demo)

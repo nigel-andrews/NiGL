@@ -1,13 +1,14 @@
+#include "nigl.h"
+
 // clang-format off
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 // clang-format on
 #include <iostream>
 
-#include "program.h"
 #include "utils/wrappers.h"
 
-namespace
+namespace nigl
 {
     int window_width = 800;
     int window_height = 600;
@@ -67,21 +68,16 @@ namespace
 
         std::cout << "Initialized GLAD...\n";
     }
-} // namespace
 
-int main(int, char**)
-{
-    auto window = init_glfw();
-
-    init_glad();
-
-    while (!glfwWindowShouldClose(window))
+    void main_loop(GLFWwindow* window)
     {
-        GL(glClear(GL_COLOR_BUFFER_BIT));
-        glfwSwapBuffers(window);
-        glfwPollEvents();
-    }
+        while (!glfwWindowShouldClose(window))
+        {
+            GL(glClear(GL_COLOR_BUFFER_BIT));
+            glfwSwapBuffers(window);
+            glfwPollEvents();
+        }
 
-    glfwTerminate();
-    return 0;
-}
+        glfwTerminate();
+    }
+} // namespace nigl
