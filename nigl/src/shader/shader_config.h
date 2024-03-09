@@ -1,6 +1,5 @@
 #pragma once
 
-#include <concepts>
 #include <filesystem>
 #include <optional>
 
@@ -21,8 +20,4 @@ namespace nigl::shader
     {
         fs::path compute_shader;
     };
-
-    template <typename T>
-    concept Configurable = std::convertible_to<T, ShaderConfig>
-        || std::convertible_to<T, ComputeShaderConfig>;
 } // namespace nigl::shader
