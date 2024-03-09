@@ -6,7 +6,7 @@
 #include <optional>
 #include <sstream>
 
-namespace shader
+namespace nigl::shader
 {
     namespace
     {
@@ -60,4 +60,4 @@ namespace shader
 
         return source.str();
     }
-} // namespace shader
+} // namespace nigl::shader

@@ -4,9 +4,8 @@
 
 #include "shader/shader_config.h"
 
-namespace Program
+namespace nigl
 {
-    GLint create_program(const shader::Configurable auto& config);
-}; // namespace Program
-
-#include "program.hxx"
+    GLint create_program(const nigl::shader::ShaderConfig& config);
+    GLint create_program(const nigl::shader::ComputeShaderConfig& config);
+}; // namespace nigl

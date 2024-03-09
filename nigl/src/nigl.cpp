@@ -6,6 +6,7 @@
 // clang-format on
 #include <iostream>
 
+#include "program.h"
 #include "utils/wrappers.h"
 
 namespace nigl

@@ -6,7 +6,7 @@
 
 namespace fs = std::filesystem;
 
-namespace shader
+namespace nigl::shader
 {
     struct ShaderConfig
     {
@@ -25,4 +25,4 @@ namespace shader
     template <typename T>
     concept Configurable = std::convertible_to<T, ShaderConfig>
         || std::convertible_to<T, ComputeShaderConfig>;
-} // namespace shader
+} // namespace nigl::shader

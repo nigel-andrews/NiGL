@@ -3,7 +3,7 @@
 #include <filesystem>
 #include <string>
 
-namespace shader
+namespace nigl::shader
 {
     std::string get_shader_source(const std::filesystem::path& shader_path);
-} // namespace shader
+} // namespace nigl::shader

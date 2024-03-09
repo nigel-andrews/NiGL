@@ -1,8 +1,9 @@
 #pragma once
 
+#include "program.h"
+
 #include <vector>
 
-#include "program.h"
 #include "shader/shader_utils.h"
 #include "utils/wrappers.h"
 
@@ -18,7 +19,7 @@ namespace Program
             GL(shader_id = glCreateShader(shader_type), return -1);
 
             std::string shader_source =
-                shader::get_shader_source(shader_source_path);
+                nigl::shader::get_shader_source(shader_source_path);
 
             const char* shader_source_cstr = shader_source.c_str();
 
@@ -37,25 +38,24 @@ namespace Program
 
     } // namespace
 
-    GLint create_program(const shader::Configurable auto& config)
+    GLint create_program(const nigl::shader::ComputeShaderConfig& config)
     {
-        if constexpr (std::convertible_to<decltype(config),
-                                          shader::ComputeShaderConfig>)
-        {
-            GLint program_id;
-            GL(program_id = glCreateProgram());
+        GLint program_id;
+        GL(program_id = glCreateProgram());
 
-            auto shader_id = compile_and_attach_shader(
-                program_id, GL_COMPUTE_SHADER, config.compute_shader);
+        auto shader_id = compile_and_attach_shader(
+            program_id, GL_COMPUTE_SHADER, config.compute_shader);
 
-            GL(glLinkProgram(program_id));
+        GL(glLinkProgram(program_id));
 
-            GL(glDetachShader(program_id, shader_id));
-            GL(glDeleteShader(shader_id));
+        GL(glDetachShader(program_id, shader_id));
+        GL(glDeleteShader(shader_id));
 
-            return program_id;
-        }
+        return program_id;
+    }
 
+    GLint create_program(const nigl::shader::ShaderConfig& config)
+    {
         GLint program_id;
 
         GL(program_id = glCreateProgram());
