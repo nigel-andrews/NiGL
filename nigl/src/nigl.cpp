@@ -7,6 +7,7 @@
 #include <iostream>
 
 #include "program.h"
+#include "utils/keyboard.h"
 #include "utils/wrappers.h"
 
 namespace nigl
@@ -50,6 +51,23 @@ namespace nigl
                               int /* action */, int /* mods */) {
                                if (key == GLFW_KEY_ESCAPE)
                                    glfwSetWindowShouldClose(window, true);
+
+                               if (UP)
+                               {
+                                   std::cout << "Up\n";
+                               }
+                               if (DOWN)
+                               {
+                                   std::cout << "Down\n";
+                               }
+                               if (LEFT)
+                               {
+                                   std::cout << "Left\n";
+                               }
+                               if (RIGHT)
+                               {
+                                   std::cout << "Right\n";
+                               }
                            });
 
         glfwSwapInterval(1);
