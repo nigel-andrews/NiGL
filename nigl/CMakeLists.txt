@@ -4,11 +4,6 @@ find_package(OpenGL REQUIRED)
 
 include(FetchContent)
 
-FetchContent_Declare(
-  imgui
-  GIT_REPOSITORY https://github.com/ocornut/imgui.git
-  GIT_TAG v1.90.1)
-
 FetchContent_GetProperties(imgui)
 
 set(GLFW_BUILD_DOCS
@@ -36,20 +31,6 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(glm)
 
-if(NOT imgui_POPULATED)
-  FetchContent_Populate(imgui)
-  set(IMGUI_INCLUDE_DIR ${imgui_SOURCE_DIR}/)
-  file(GLOB IMGUI_SOURCES ${imgui_SOURCE_DIR}/*.cpp)
-  file(GLOB IMGUI_HEADERS ${imgui_SOURCE_DIR}/*.h)
-  add_library(imgui STATIC ${IMGUI_SOURCES} ${IMGUI_SOURCES})
-  add_definitions(-DIMGUI_IMPL_OPENGL_LOADER_GLAD)
-
-  target_include_directories(
-    imgui PUBLIC ${IMGUI_INCLUDE_DIR} ${OPENGL_INCLUDE_DIR} ${GLFW_INCLUDE_DIR}
-                 ${GLAD_INCLUDE_DIR})
-  target_link_libraries(imgui ${OPENGL_LIBRARIES} glfw GLEW)
-endif()
-
 add_library(compile_options INTERFACE)
 
 target_compile_options(
@@ -58,7 +39,6 @@ target_compile_options(
             "-Wextra"
             "-Wvla"
             "-pedantic"
-            "-fPIC"
             $<$<CONFIG:Release>:-O3>
             $<$<CONFIG:Release>:-Werror>
             $<$<CONFIG:Debug>:-O0>
@@ -76,6 +56,8 @@ add_subdirectory(external)
 add_subdirectory(src)
 
 add_library(nigl SHARED src/nigl.cpp)
+
+target_compile_options(nigl PRIVATE "-fPIC")
 
 set_target_properties(nigl PROPERTIES CXX_STANDARD 23 CXX_EXTENSIONS OFF)
 
