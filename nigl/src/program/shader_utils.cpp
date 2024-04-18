@@ -6,7 +6,7 @@
 #include <optional>
 #include <sstream>
 
-namespace nigl::shader
+namespace nigl
 {
     namespace
     {
@@ -36,6 +36,7 @@ namespace nigl::shader
             }
 
             filename = filename.substr(1);
+
             while (filename.back() == ' ' || filename.back() == '"')
                 filename.pop_back();
 
@@ -43,6 +44,7 @@ namespace nigl::shader
         }
     } // namespace
 
+    // String streams are notoriously slow, maybe alternative ?
     std::string get_shader_source(const std::filesystem::path& shader_path)
     {
         std::stringstream source;
@@ -60,4 +62,4 @@ namespace nigl::shader
 
         return source.str();
     }
-} // namespace nigl::shader
+} // namespace nigl

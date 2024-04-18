@@ -2,14 +2,6 @@
 
 #include <iostream>
 
-#define GLFW_ERR(...)                                                          \
-    do                                                                         \
-    {                                                                          \
-        const char* msg = nullptr;                                             \
-        glfwGetError(&msg);                                                    \
-        __VA_ARGS__;                                                           \
-    } while (false)
-
 #define GL(Expr, ...)                                                          \
     do                                                                         \
     {                                                                          \

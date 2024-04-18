@@ -50,6 +50,7 @@ target_link_options(compile_options INTERFACE
                     $<$<CONFIG:Debug>:-fsanitize=address>)
 
 target_compile_definitions(compile_options INTERFACE -DDEBUG)
+target_include_directories(compile_options INTERFACE src)
 
 add_subdirectory(external)
 
@@ -63,5 +64,5 @@ set_target_properties(nigl PROPERTIES CXX_STANDARD 23 CXX_EXTENSIONS OFF)
 
 target_include_directories(nigl PUBLIC external)
 
-target_link_libraries(nigl PRIVATE compile_options imgui glfw glad glm::glm
-                                   shader)
+target_link_libraries(nigl PRIVATE compile_options imgui glfw glad glm::glm)
+target_link_libraries(nigl PUBLIC program)

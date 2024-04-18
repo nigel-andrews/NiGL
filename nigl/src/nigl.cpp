@@ -6,9 +6,17 @@
 // clang-format on
 #include <iostream>
 
-#include "program.h"
+#include "program/program.h"
 #include "utils/keyboard.h"
 #include "utils/wrappers.h"
+
+#define GLFW_ERR(...)                                                          \
+    do                                                                         \
+    {                                                                          \
+        const char* msg = nullptr;                                             \
+        glfwGetError(&msg);                                                    \
+        __VA_ARGS__;                                                           \
+    } while (false)
 
 namespace nigl
 {
@@ -41,7 +49,7 @@ namespace nigl
 
         glfwSetFramebufferSizeCallback(window,
                                        [](GLFWwindow*, int width, int height) {
-                                           GL(glViewport(0, 0, width, height));
+                                           glViewport(0, 0, width, height);
                                            window_width = width;
                                            window_height = height;
                                        });
@@ -75,15 +83,24 @@ namespace nigl
         return window;
     }
 
+#undef GLFW_ERR
+
     void init_glad()
     {
         if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
             throw std::runtime_error("Failed to initialize GLAD");
 
+#ifdef DEBUG
+        // FIXME: let the user toggle this feature (with custom formatting ?)
+        glEnable(GL_DEBUG_OUTPUT);
+        glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
+        glDebugMessageCallback(nullptr, nullptr);
+#endif // DEBUG
+
         std::cout << "Renderer: " << glGetString(GL_RENDERER)
                   << "\nOpenGL version: " << glGetString(GL_VERSION) << "\n";
 
-        GL(glViewport(0, 0, window_width, window_height));
+        glViewport(0, 0, window_width, window_height);
 
         std::cout << "Initialized GLAD...\n";
     }
@@ -92,7 +109,7 @@ namespace nigl
     {
         while (!glfwWindowShouldClose(window))
         {
-            GL(glClear(GL_COLOR_BUFFER_BIT));
+            glClear(GL_COLOR_BUFFER_BIT);
             glfwSwapBuffers(window);
             glfwPollEvents();
         }

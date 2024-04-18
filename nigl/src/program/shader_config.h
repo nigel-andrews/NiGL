@@ -5,7 +5,7 @@
 
 namespace fs = std::filesystem;
 
-namespace nigl::shader
+namespace nigl
 {
     struct ShaderConfig
     {
@@ -20,4 +20,4 @@ namespace nigl::shader
     {
         fs::path compute_shader;
     };
-} // namespace nigl::shader
+} // namespace nigl
