@@ -43,7 +43,7 @@ namespace nigl
                                         GLenum shader_type)
     {
         // TODO: Check if this works
-        static std::unordered_map<GLenum, GLuint Program::*> lut{
+        static std::unordered_map<GLenum, std::optional<GLuint> Program::*> lut{
             { GL_VERTEX_SHADER, &Program::vertex_id_ },
             { GL_FRAGMENT_SHADER, &Program::fragment_id_ },
             { GL_TESS_CONTROL_SHADER, &Program::tessellation_control_ },

@@ -8,6 +8,8 @@
 
 namespace nigl
 {
+    // FIXME: Create a IProgram interface and have ShaderProgram and
+    // ComputeProgram implement it
     class Program : public NonCopyable
     {
     public:
@@ -28,11 +30,10 @@ namespace nigl
     private:
         GLuint id_;
 
-        // FIXME: use optionals to preserve invariants
-        GLuint vertex_id_;
-        GLuint geometry_id_;
-        GLuint tessellation_control_;
-        GLuint tessellation_eval_;
-        GLuint fragment_id_;
+        std::optional<GLuint> vertex_id_;
+        std::optional<GLuint> geometry_id_;
+        std::optional<GLuint> tessellation_control_;
+        std::optional<GLuint> tessellation_eval_;
+        std::optional<GLuint> fragment_id_;
     };
 }; // namespace nigl
