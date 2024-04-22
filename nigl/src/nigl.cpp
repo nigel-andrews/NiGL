@@ -4,11 +4,11 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 // clang-format on
+#include <format>
 #include <iostream>
+#include <unordered_map>
 
-#include "program/program.h"
 #include "utils/keyboard.h"
-#include "utils/wrappers.h"
 
 #define GLFW_ERR(...)                                                          \
     do                                                                         \
@@ -85,17 +85,66 @@ namespace nigl
 
 #undef GLFW_ERR
 
+    // Thank you https://gist.github.com/liam-middlebrook/c52b069e4be2d87a6d2f
+    // for the possible values
+    void debug_callback(GLenum source, GLenum type, GLuint id, GLenum severity,
+                        GLsizei /*length*/, const GLchar* msg,
+                        const void* /*data*/)
+    {
+        static const std::unordered_map<GLenum, const char*> sources{
+            { GL_DEBUG_SOURCE_API, "API" },
+            { GL_DEBUG_SOURCE_WINDOW_SYSTEM, "WINDOW_SYSTEM" },
+            { GL_DEBUG_SOURCE_SHADER_COMPILER, "SHADER_COMPILER" },
+            { GL_DEBUG_SOURCE_THIRD_PARTY, "THIRD_PARTY" },
+            { GL_DEBUG_SOURCE_APPLICATION, "APPLICATION" },
+            { GL_DEBUG_SOURCE_OTHER, "UNKNOWN" },
+        };
+
+        static const std::unordered_map<GLenum, const char*> types{
+            { GL_DEBUG_TYPE_ERROR, "ERROR" },
+            { GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR, "DEPRECATED_BEHAVIOR" },
+            { GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR, "UNDEFINED_BEHAVIOR" },
+            { GL_DEBUG_TYPE_PORTABILITY, "PORTABILITY" },
+            { GL_DEBUG_TYPE_PERFORMANCE, "PERFORMANCE" },
+            { GL_DEBUG_TYPE_OTHER, "OTHER" },
+            { GL_DEBUG_TYPE_MARKER, "MARKER" },
+        };
+
+        static const std::unordered_map<GLenum, const char*> severities{
+            { GL_DEBUG_SEVERITY_LOW, "LOW" },
+            { GL_DEBUG_SEVERITY_MEDIUM, "MEDIUM" },
+            { GL_DEBUG_SEVERITY_HIGH, "HIGH" },
+            { GL_DEBUG_SEVERITY_NOTIFICATION, "NOTIFICATION" },
+        };
+
+        auto source_it = sources.find(source);
+        auto type_it = types.find(type);
+        auto severity_it = severities.find(severity);
+
+        constexpr auto unwrap = [](const auto& value, const auto& past_end) {
+            if (value != past_end)
+            {
+                return value->second;
+            }
+
+            return "UNKNOWN";
+        };
+
+        std::cerr << std::format("ERROR[{}][{}] {} ! From {} : {}\n", id,
+                                 unwrap(severity_it, severities.end()),
+                                 unwrap(type_it, types.end()),
+                                 unwrap(source_it, sources.end()), msg);
+    }
+
     void init_glad()
     {
         if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
             throw std::runtime_error("Failed to initialize GLAD");
 
-#ifdef DEBUG
         // FIXME: let the user toggle this feature (with custom formatting ?)
         glEnable(GL_DEBUG_OUTPUT);
         glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
         glDebugMessageCallback(nullptr, nullptr);
-#endif // DEBUG
 
         std::cout << "Renderer: " << glGetString(GL_RENDERER)
                   << "\nOpenGL version: " << glGetString(GL_VERSION) << "\n";
