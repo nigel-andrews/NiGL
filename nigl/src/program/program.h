@@ -23,6 +23,7 @@ namespace nigl
                                    GLenum shader_type);
 
         void link_program();
+        void use_program();
 
         static Program from_files(const ShaderConfig& shader_config);
         static Program from_files(const ComputeShaderConfig& shader_config);

@@ -59,9 +59,22 @@ namespace nigl
 
     void Program::link_program()
     {
+        if (!vertex_id_.has_value())
+            throw std::runtime_error(
+                "Failed to link program : no vertex shader found");
+
+        if (!fragment_id_.has_value())
+            throw std::runtime_error(
+                "Failed to link program : no fragment shader found");
+
         glLinkProgram(id_);
 
         // FIXME: Detach and delete shaders (cleanup quoi.)
+    }
+
+    inline void Program::use_program()
+    {
+        glUseProgram(id_);
     }
 
     Program Program::from_files(const ShaderConfig&)
