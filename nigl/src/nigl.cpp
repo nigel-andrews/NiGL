@@ -10,6 +10,7 @@
 
 #include "utils/keyboard.h"
 
+// TODO : Now that we have callbacks, remove macro wrappers
 #define GLFW_ERR(...)                                                          \
     do                                                                         \
     {                                                                          \
@@ -121,6 +122,7 @@ namespace nigl
         auto type_it = types.find(type);
         auto severity_it = severities.find(severity);
 
+        // Probably does nothing but in case
         constexpr auto unwrap = [](const auto& value, const auto& past_end) {
             if (value != past_end)
             {
